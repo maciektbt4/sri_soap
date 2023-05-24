@@ -29,19 +29,16 @@
 # EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-# from django.conf.urls import url
-from django.urls import re_path
-
-
+from django.urls import re_path, path
+from django.contrib import admin
 from spyne.protocol.soap import Soap11
 from spyne.server.django import DjangoView
-
 from rpctest.core.views import hello_world_service, app, HelloWorldService, PersonService
 
 
 
-
 urlpatterns = [
+    path('admin/', admin.site.urls),
     # re_path(r'^hello_world/', hello_world_service),
     # re_path(r'^say_hello/', DjangoView.as_view(
     #     services=[HelloWorldService], tns='spyne.examples.django',

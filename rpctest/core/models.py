@@ -70,6 +70,7 @@ import datetime
 # Create your models here.
 class Person(models.Model):
     sex = models.CharField(max_length=50)
+    hight =models.CharField(max_length=50)
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     job = models.CharField(max_length=50)

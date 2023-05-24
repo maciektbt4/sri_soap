@@ -65,6 +65,7 @@ class PersonService(Service):
     @rpc(Integer, _returns=PersonContainer)
     def get_person(ctx, pk):
         try:
+            print(f"-------------Hello persons------------{pk}")
             return Person.objects.get(pk=pk)
         except Person.DoesNotExist:
             raise ResourceNotFoundError('PersonContainer')
