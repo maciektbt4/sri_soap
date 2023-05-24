@@ -2,7 +2,7 @@ from django.urls import re_path, path
 from django.contrib import admin
 from spyne.protocol.soap import Soap11
 from spyne.server.django import DjangoView
-from rpctest.core.views import hello_world_service, app, HelloWorldService, PersonService
+from .views import hello_world_service, app, HelloWorldService, PersonService
 
 
 urlpatterns = [
