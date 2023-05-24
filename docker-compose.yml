@@ -3,11 +3,11 @@ services:
 
   api:
     build:
-      context: ./rpctest
+      context: ./sri_soap_project
       dockerfile: docker/docker_files/Dockerfile
     restart: unless-stopped
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./rpctest:/code
+      - ./sri_soap_project:/code
     ports:
       - 8000:8000
