@@ -29,10 +29,14 @@
 #
 
 # Django settings for rpctest project.
+from pathlib import Path
 import os
 import tempfile
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
@@ -42,18 +46,15 @@ MANAGERS = ADMINS
 
 db_name = os.path.join(tempfile.gettempdir(), 'rpctest.sqlite')
 
-ALLOWED_HOSTS = ['newtestserver']
+ALLOWED_HOSTS = ['newtestserver', 'localhost']
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': db_name,                      # Or path to database file if using sqlite3.
-        'USER': '',                      # Not used with sqlite3.
-        'PASSWORD': '',                  # Not used with sqlite3.
-        'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
-        'PORT': '',                      # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -145,7 +146,13 @@ TEMPLATE_DIRS = (
 INSTALLED_APPS = (
     'rpctest.core',
     # Uncomment the next line to enable the admin:
-    # 'django.contrib.admin',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'django_extensions',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
@@ -172,3 +179,8 @@ LOGGING = {
         },
     }
 }
+SPYNE = {
+    'validate_xml': False,
+    # Inne ustawienia...
+}
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

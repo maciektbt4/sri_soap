@@ -42,13 +42,16 @@ from spyne.application import Application
 from spyne.decorator import rpc
 from spyne.util.django import DjangoComplexModel, DjangoService
 
-from rpctest.core.models import FieldContainer
+from .serializers import PersonSerializer
+from .models import Person
+
+# from rpctest.core.models import FieldContainer
 
 
-class Container(DjangoComplexModel):
+class PersonContainer(DjangoComplexModel):
     class Attributes(DjangoComplexModel.Attributes):
-        django_model = FieldContainer
-        django_exclude = ['excluded_field']
+        django_model = Person
+        #django_exclude = ['excluded_field']
 
 
 class HelloWorldService(Service):
@@ -58,39 +61,40 @@ class HelloWorldService(Service):
             yield 'Hello, %s' % name
 
 
-class ContainerService(Service):
-    @rpc(Integer, _returns=Container)
-    def get_container(ctx, pk):
+class PersonService(Service):
+    @rpc(Integer, _returns=PersonContainer)
+    def get_person(ctx, pk):
         try:
-            return FieldContainer.objects.get(pk=pk)
-        except FieldContainer.DoesNotExist:
-            raise ResourceNotFoundError('Container')
+            return Person.objects.get(pk=pk)
+        except Person.DoesNotExist:
+            raise ResourceNotFoundError('PersonContainer')
 
-    @rpc(Container, _returns=Container)
-    def create_container(ctx, container):
+    @rpc(PersonContainer, _returns=PersonContainer)
+    def create_person(ctx, container):
         try:
-            return FieldContainer.objects.create(**container.as_dict())
+            return Person.objects.create(**container.as_dict())
         except IntegrityError:
-            raise ResourceAlreadyExistsError('Container')
+            raise ResourceAlreadyExistsError('PersonContainer')
 
 class ExceptionHandlingService(DjangoService):
 
     """Service for testing exception handling."""
 
-    @rpc(_returns=Container)
+    @rpc(_returns=PersonContainer)
     def raise_does_not_exist(ctx):
-        return FieldContainer.objects.get(pk=-1)
+        return Person.objects.get(pk=-1)
 
-    @rpc(_returns=Container)
-    def raise_validation_error(ctx):
-        raise ValidationError(None, 'Invalid.')
+    # @rpc(_returns=PersonContainer)
+    # def raise_validation_error(ctx):
+    #     raise ValidationError(None, 'Invalid.')
 
 
-app = Application([HelloWorldService, ContainerService,
+app = Application([HelloWorldService, PersonService,
                    ExceptionHandlingService],
     'spyne.examples.django',
-    in_protocol=Soap11(validator='lxml'),
+    in_protocol=Soap11(),
     out_protocol=Soap11(),
 )
+
 
 hello_world_service = csrf_exempt(DjangoApplication(app))

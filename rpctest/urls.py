@@ -36,17 +36,42 @@ from django.urls import re_path
 from spyne.protocol.soap import Soap11
 from spyne.server.django import DjangoView
 
-from rpctest.core.views import hello_world_service, app, HelloWorldService
+from rpctest.core.views import hello_world_service, app, HelloWorldService, PersonService
+
+
 
 
 urlpatterns = [
-    re_path(r'^hello_world/', hello_world_service),
-    re_path(r'^say_hello/', DjangoView.as_view(
-        services=[HelloWorldService], tns='spyne.examples.django',
+    # re_path(r'^hello_world/', hello_world_service),
+    # re_path(r'^say_hello/', DjangoView.as_view(
+    #     services=[HelloWorldService], tns='spyne.examples.django',
+    #     in_protocol=Soap11(validator='lxml'), out_protocol=Soap11())),
+    # re_path(r'^say_hello_not_cached/', DjangoView.as_view(
+    #     services=[HelloWorldService], tns='spyne.examples.django',
+    #     in_protocol=Soap11(validator='lxml'), out_protocol=Soap11(),
+    #     cache_wsdl=False)),
+    re_path(r'^get_person/', DjangoView.as_view(
+        services=[PersonService], tns='spyne.examples.django',
         in_protocol=Soap11(validator='lxml'), out_protocol=Soap11())),
-    re_path(r'^say_hello_not_cached/', DjangoView.as_view(
-        services=[HelloWorldService], tns='spyne.examples.django',
-        in_protocol=Soap11(validator='lxml'), out_protocol=Soap11(),
-        cache_wsdl=False)),
+    # re_path(r'^create_person/', DjangoView.as_view(
+    #     services=[PersonService], tns='spyne.examples.django', out_protocol=Soap11())),
     re_path(r'^api/', DjangoView.as_view(application=app)),
 ]
+
+# urlpatterns = [
+#     re_path(r'^hello_world/', hello_world_service),
+#     re_path(r'^say_hello/', DjangoView.as_view(
+#         services=[HelloWorldService], tns='spyne.examples.django',
+#         in_protocol=Soap11(validator='lxml'), out_protocol=Soap11())),
+#     re_path(r'^say_hello_not_cached/', DjangoView.as_view(
+#         services=[HelloWorldService], tns='spyne.examples.django',
+#         in_protocol=Soap11(validator='lxml'), out_protocol=Soap11(),
+#         cache_wsdl=False)),
+#     re_path(r'^get_person/', DjangoView.as_view(
+#         services=[PersonService], tns='spyne.examples.django',
+#         in_protocol=Soap11(validator='lxml'), out_protocol=Soap11())),
+#     re_path(r'^create_person/', DjangoView.as_view(
+#         services=[PersonService], tns='spyne.examples.django',
+#         in_protocol=Soap11(validator='lxml'), out_protocol=Soap11())),
+#     re_path(r'^api/', DjangoView.as_view(application=app)),
+# ]
